@@ -44,7 +44,7 @@ public class MoreMapLayer extends TiledServiceLayer {
     public MoreMapLayer(int layerType, String cachePath) {
         super(true);
         this.layerInfo = LayerInfoFactory.getLayerInfo(layerType);
-        this.cachePath = cachePath + "/" + layerInfo.getCachePathName() + "_" + layerInfo.getTileMatrixSet() + "/";
+        this.cachePath = cachePath + "/" + layerInfo.getCachePathName() + "/";
         this.init();
     }
 
@@ -126,7 +126,7 @@ public class MoreMapLayer extends TiledServiceLayer {
     private byte[] getOfflineCacheFile(String cachePath, int level, int col, int row) {
         byte[] bytes = null;
         File rowfile = new File(cachePath + "/" + level + "/" + col + "x" + row
-                + ".tdt");
+                + ".cmap");
         if (rowfile.exists()) {
             try {
                 bytes = CopySdcardbytes(rowfile);

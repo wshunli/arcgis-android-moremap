@@ -1,5 +1,6 @@
 package com.wshunli.map.arcgis.android.moremap.sample;
 
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -14,8 +15,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MapView mapView = findViewById(R.id.map);
-        mapView.addLayer(new MoreMapLayer(MoreMapLayerTypes.AMAP_VECTOR));
-//        mapView.addLayer(new ChinaMapLayer(ChinaMapLayerTypes.TENCENT_MAP_ROAD));
+        MapView mMapView = findViewById(R.id.map);
+        mMapView.addLayer(new MoreMapLayer(MoreMapLayerTypes.AMAP_VECTOR));
+
+        String cachePath = Environment.getExternalStorageDirectory().getAbsoluteFile() + "/MoreMapCache";
+        MoreMapLayer vec_c = new MoreMapLayer(MoreMapLayerTypes.AMAP_IMAGE, cachePath);
+        mMapView.addLayer(vec_c);
     }
 }

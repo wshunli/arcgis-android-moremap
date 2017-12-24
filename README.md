@@ -7,9 +7,9 @@
 
 基于 ArcGIS for Android 加载高德/百度/腾讯等切片底图
 
-## Download
+## 准备
 
-Install the needed dependencies and the ArcGIS Runtime SDK for Android (ArcGIS Android SDK)  binaries from Bintray Esri repostiory.
+使用之前需添加 ArcGIS for Android 依赖：
 
 ```groovy
 repositories {
@@ -25,7 +25,7 @@ dependencies {
 }
 ```
 
-App module build.gradle file, within android block
+排除重复依赖：
 
 ```groovy
 packagingOptions {
@@ -35,27 +35,7 @@ packagingOptions {
 }
 ```
 
-For more information : [Install and set up—ArcGIS Runtime SDK for Android](https://developers.arcgis.com/android/10-2/guide/install-and-set-up.htm)
-
-Install arcgis-android-moremap library.
-
-```groovy
-repositories {
-    jcenter()
-}
-
-dependencies {
-    compile 'com.wshunli.map:arcgis-android-moremap:1.0.0'
-}
-```
-
-Check out [arcgis-android-moremap releases](https://github.com/wshunli/arcgis-android-moremap/releases) to see more unstable versions.
-
-## How do I use arcgis-android-moremap?
-
-#### Permission
-
-The library requires three permissions:
+声明权限：
 
 ``` XML
 <uses-feature android:glEsVersion="0x00020000" android:required="true" />
@@ -65,21 +45,34 @@ The library requires three permissions:
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 ```
 
-So if you are targeting Android 6.0+, you need to handle runtime permission request before next step.
+更多信息可查看官方文档 : [Install and set up—ArcGIS Runtime SDK for Android](https://developers.arcgis.com/android/10-2/guide/install-and-set-up.htm)
 
-Note that OpenGL is included as a feature.
+## 使用
 
-#### Simple usage snippet
+添加 arcgis-android-moremap 依赖：
+
+```groovy
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'com.wshunli.map:arcgis-android-moremap:1.0.1'
+}
+```
+
+更多版本查看 [arcgis-android-moremap releases](https://github.com/wshunli/arcgis-android-moremap/releases)
+
+## 示例
 
 ``` Java
 MapView mMapView = (MapView) findViewById(R.id.map);
-MoreMapLayer vec_c = new MoreMapLayer(MoreMapLayerTypes.AMAP_VECTOR);
-mMapView.addLayer(vec_c);
+mMapView.addLayer(new MoreMapLayer(MoreMapLayerTypes.AMAP_VECTOR));
 ```
 
-#### Cache tile layers
+### 缓存切片图层
 
-Just specify the cache path
+指定缓存路径即可缓存切片：
 
 ``` Java
 MapView mMapView = (MapView) findViewById(R.id.map);
@@ -88,11 +81,39 @@ MoreMapLayer vec_c = new MoreMapLayer(MoreMapLayerTypes.AMAP_VECTOR, cachePath);
 mMapView.addLayer(vec_c);
 ```
 
-File will be cached to the specified path
+### 支持图层
 
-#### More
+高德地图
 
-Find more details about arcgis-android-moremap in [sample](https://github.com/wshunli/arcgis-android-moremap/tree/master/app).
+- AMAP_VECTOR、高德矢量图层（含路网，含注记）
+- AMAP_IMAGE、高德影像图层（不含路网，不含注记）
+- AMAP_ROAD、高德路网图层（含路网，含注记）
+- AMAP_TRAFFIC、高德实时交通图层
+
+百度地图
+
+- BAIDU_MAP_VECTOR、百度矢量图层（含路网，含注记）
+- BAIDU_MAP_IMAGE、百度影像图层（不含路网，不含注记）
+- BAIDU_MAP_ROAD、百度路网图层（含路网，含注记）
+- BAIDU_MAP_TRAFFIC、百度实时交通图层
+
+腾讯地图
+
+- TENCENT_MAP_VECTOR、腾讯矢量图层（含路网，含注记）
+- TENCENT_MAP_VECTOR_NIGHT、腾讯矢量图层（夜间，含路网，含注记）
+- TENCENT_MAP_IMAGE、腾讯影像图层（不含路网，不含注记）
+- TENCENT_MAP_TERRAIN、腾讯地形图层（不含路网，不含注记）
+- TENCENT_MAP_ROAD 、腾讯路网图层（含路网，含注记）
+
+谷歌地图
+
+- GOOGLE_MAP_VECTOR、谷歌矢量地图服务
+- GOOGLE_MAP_IMAGE、谷歌影像地图服务
+- GOOGLE_MAP_TERRAIN、谷歌地形地图服务
+
+### 更多
+
+更多信息查看示例代码 [sample](https://github.com/wshunli/arcgis-android-moremap/tree/master/app)
 
 ## License
 
