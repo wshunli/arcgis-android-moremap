@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.wshunli.map.arcgis.android.moremap.MoreMapLayer {
+    public MoreMapLayer(int);
+    public MoreMapLayer(int, java.lang.String);
+}
+-keep class com.wshunli.map.arcgis.android.moremap.MoreMapLayerTypes { *;}
