@@ -6,8 +6,9 @@ import android.os.Environment;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.esri.android.map.MapView;
-import com.wshunli.map.arcgis.android.moremap.MoreMapLayer;
-import com.wshunli.map.arcgis.android.moremap.MoreMapLayerTypes;
+import com.wshunli.map.moremap.MoreMapLayer;
+import com.wshunli.map.moremap.MoreMapLayerTypes;
+
 
 public class MainActivity extends AppCompatActivity {
 

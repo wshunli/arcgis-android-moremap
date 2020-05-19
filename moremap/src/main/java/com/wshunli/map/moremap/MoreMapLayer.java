@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.wshunli.map.arcgis.android.moremap;
+package com.wshunli.map.moremap;
 
 import android.util.Log;
 
 import com.esri.android.map.TiledServiceLayer;
 import com.esri.core.geometry.Envelope;
 import com.esri.core.geometry.SpatialReference;
+import com.wshunli.map.moremap.LayerInfoFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
