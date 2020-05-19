@@ -17,22 +17,21 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.3"
+    compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 3
+        versionName "1.1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     lintOptions {
         abortOnError false
@@ -53,7 +52,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation 'com.esri.arcgis.android:arcgis-android:10.2.9'
 }
@@ -64,7 +63,7 @@ publish {
     userOrg = 'wshunli'
     groupId = 'com.wshunli.map'
     artifactId = 'arcgis-android-moremap'
-    publishVersion = '1.0.1'
+    publishVersion = '1.1.0'
     desc = 'Library for displaying and caching more layers based on ArcGIS for Android'
     website = 'http://www.wshunli.com/'
 }
