@@ -1,4 +1,4 @@
-package com.wshunli.map.arcgis.android.moremap.sample;
+package com.wshunli.map.moremap.sample;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.wshunli.map.arcgis.android.moremap.sample", appContext.getPackageName());
+        assertEquals("com.wshunli.map.moremap.sample", appContext.getPackageName());
     }
 }

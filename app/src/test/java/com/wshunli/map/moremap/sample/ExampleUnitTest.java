@@ -1,4 +1,4 @@
-package com.wshunli.map.arcgis.android.moremap.sample;
+package com.wshunli.map.moremap.sample;
 
 import org.junit.Test;
 

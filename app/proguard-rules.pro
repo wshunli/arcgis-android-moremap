@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# ArcGIS Android
+-keep class com.esri.** { *; }
+-keep interface com.esri.** { *; }
+-keep class org.codehaus.jackson.** { *; }
+-dontwarn org.codehaus.jackson.map.ext.**
+-dontwarn jcifs.http.**

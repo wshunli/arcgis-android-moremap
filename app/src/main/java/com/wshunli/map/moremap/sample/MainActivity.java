@@ -1,8 +1,9 @@
-package com.wshunli.map.arcgis.android.moremap.sample;
+package com.wshunli.map.moremap.sample;
 
-import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Environment;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.esri.android.map.MapView;
 import com.wshunli.map.arcgis.android.moremap.MoreMapLayer;
@@ -13,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         MapView mMapView = findViewById(R.id.map);
