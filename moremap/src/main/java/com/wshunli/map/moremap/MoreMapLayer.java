@@ -15,144 +15,80 @@
  */
 package com.wshunli.map.moremap;
 
+import android.content.Context;
 import android.util.Log;
 
-import com.esri.android.map.TiledServiceLayer;
-import com.esri.core.geometry.Envelope;
-import com.esri.core.geometry.SpatialReference;
-import com.wshunli.map.moremap.LayerInfoFactory;
+import com.esri.arcgisruntime.layers.WebTiledLayer;
+import com.wshunli.map.moremap.core.IMapLayer;
+import com.wshunli.map.moremap.core.IMapType;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.RejectedExecutionException;
+public class MoreMapLayer {
 
-public class MoreMapLayer extends TiledServiceLayer {
+    private static final String TAG = "MoreMapLayer";
 
-    private MoreMapLayerInfo layerInfo;
-    private String cachePath;
+    private Context context = null;
+    private String cachePath = null;
 
-    public MoreMapLayer(int layerType) {
-        super(true);
-        this.layerInfo = LayerInfoFactory.getLayerInfo(layerType);
-        this.cachePath = null;
-        this.init();
+    private MoreMapLayer() {
     }
 
-    public MoreMapLayer(int layerType, String cachePath) {
-        super(true);
-        this.layerInfo = LayerInfoFactory.getLayerInfo(layerType);
-        this.cachePath = cachePath + "/" + layerInfo.getCachePathName() + "/";
-        this.init();
-    }
+    private volatile static MoreMapLayer instance = null;
 
-    private void init() {
-        try {
-            getServiceExecutor().submit(new Runnable() {
-                public void run() {
-                    MoreMapLayer.this.initLayer();
+    public static MoreMapLayer getInstance() {
+        if (instance == null) {
+            synchronized (MoreMapLayer.class) {
+                if (instance == null) {
+                    instance = new MoreMapLayer();
                 }
-            });
-        } catch (RejectedExecutionException rejectedexecutionexception) {
-            Log.e("ChinaMapLayer", "initialization of the layer failed.",
-                    rejectedexecutionexception);
-        }
-    }
-
-    protected byte[] getTile(int level, int col, int row) throws Exception {
-        if (level > layerInfo.getMaxZoomLevel() || level < layerInfo.getMinZoomLevel())
-            return new byte[0];
-        byte[] bytes = null;
-        if (cachePath != null)
-            bytes = getOfflineCacheFile(cachePath, level, col, row);
-        if (bytes == null) {
-            String layerUrl = LayerInfoFactory.getLayerUrl(layerInfo, level, col, row);
-
-            Map<String, String> map = null;
-            bytes = com.esri.core.internal.io.handler.a.a(layerUrl, map);
-            if (cachePath != null)
-                AddOfflineCacheFile(cachePath, level, col, row, bytes);
-        }
-        return bytes;
-    }
-
-    protected void initLayer() {
-        if (getID() == 0L) {
-            nativeHandle = create();
-            changeStatus(com.esri.android.map.event.OnStatusChangedListener.STATUS
-                    .fromInt(-1000));
-        } else {
-            this.setDefaultSpatialReference(SpatialReference.create(layerInfo
-                    .getSrid()));
-            this.setFullExtent(new Envelope(layerInfo.getxMin(), layerInfo
-                    .getyMin(), layerInfo.getxMax(), layerInfo.getyMax()));
-            this.setTileInfo(new TileInfo(layerInfo.getOrigin(), layerInfo
-                    .getScales(), layerInfo.getResolutions(), layerInfo
-                    .getScales().length, layerInfo.getDpi(), layerInfo
-                    .getTileWidth(), layerInfo.getTileHeight()));
-            super.initLayer();
-        }
-    }
-
-    // 将图片保存到本地 目录结构可以随便定义 只要你找得到对应的图片
-    private byte[] AddOfflineCacheFile(String cachePath, int level, int col, int row, byte[] bytes) {
-
-        File file = new File(cachePath);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        File levelfile = new File(cachePath + "/" + level);
-        if (!levelfile.exists()) {
-            levelfile.mkdirs();
-        }
-        File rowfile = new File(cachePath + "/" + level + "/" + col + "x" + row
-                + ".cmap");
-        if (!rowfile.exists()) {
-            try {
-                FileOutputStream out = new FileOutputStream(rowfile);
-                out.write(bytes);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
         }
-        return bytes;
-
+        return instance;
     }
 
-    // 从本地获取图片
-    private byte[] getOfflineCacheFile(String cachePath, int level, int col, int row) {
-        byte[] bytes = null;
-        File rowfile = new File(cachePath + "/" + level + "/" + col + "x" + row
-                + ".cmap");
-        if (rowfile.exists()) {
-            try {
-                bytes = CopySdcardbytes(rowfile);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else {
-            bytes = null;
+    // 初始化
+    public void init(Context context) {
+        if (context == null) {
+            throw new NullPointerException();
         }
-        return bytes;
+        this.init(context, getDefaultCachePath(context));
     }
 
-    // 读取本地图片流
-    private byte[] CopySdcardbytes(File file) throws IOException {
-        FileInputStream in = new FileInputStream(file);
-        ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
-        byte[] temp = new byte[1024];
-        int size = 0;
-        while ((size = in.read(temp)) != -1) {
-            out.write(temp, 0, size);
+    // 初始化
+    public void init(Context context, String cachePath) {
+        if (context == null) {
+            Log.e(TAG, "context is null, please check it");
+            throw new NullPointerException();
         }
-        in.close();
-        byte[] bytes = out.toByteArray();
-        return bytes;
+        if (cachePath == null || cachePath.isEmpty()) {
+            Log.w(TAG, "cachePath is null or empty , set default value");
+            cachePath = getDefaultCachePath(context);
+        }
+        this.context = context;
+        this.cachePath = cachePath;
+        Log.i(TAG, "init cachePath: " + cachePath);
+    }
+
+    /**
+     * 获取 WebTiledLayer 图层
+     *
+     * @param iMapLayer 图层实例
+     * @param iMapType  图层类型
+     * @return ArcGIS Android 对应图层
+     */
+    public WebTiledLayer getLayer(IMapLayer iMapLayer, IMapType iMapType) {
+        return iMapLayer.getLayer(iMapType);
+    }
+
+    private Context getContext() {
+        return context;
+    }
+
+    private String getCachePath() {
+        return cachePath;
+    }
+
+    private String getDefaultCachePath(Context context) {
+        return context.getCacheDir().getAbsolutePath() + "/tdt";
     }
 
 }
