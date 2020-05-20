@@ -4,6 +4,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.wshunli.map.moremap.sample"
         minSdkVersion 19
         targetSdkVersion 28
@@ -55,7 +56,9 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:multidex:1.0.3'
     implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation 'com.lxj:xpopup:1.9.0'
 
     implementation 'com.esri.arcgisruntime:arcgis-android:100.3.0'
     implementation project(':moremap')

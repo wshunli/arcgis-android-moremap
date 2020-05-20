@@ -26,3 +26,7 @@
 -keep class org.codehaus.jackson.** { *; }
 -dontwarn org.codehaus.jackson.map.ext.**
 -dontwarn jcifs.http.**
+
+# XPopup
+-dontwarn com.lxj.xpopup.widget.**
+-keep class com.lxj.xpopup.widget.**{*;}
