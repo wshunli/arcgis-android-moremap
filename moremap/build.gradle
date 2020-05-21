@@ -63,7 +63,7 @@ publish {
     userOrg = 'wshunli'
     groupId = 'com.wshunli.map'
     artifactId = 'arcgis-android-moremap'
-    publishVersion = '1.1.0'
+    publishVersion = '1.1.1'
     desc = 'Library for displaying and caching more layers based on ArcGIS for Android'
     website = 'http://www.wshunli.com/'
 }

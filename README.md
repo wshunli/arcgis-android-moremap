@@ -57,7 +57,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.wshunli.map:arcgis-android-moremap:1.1.0'
+    implementation 'com.wshunli.map:arcgis-android-moremap:1.1.1'
 }
 ```
 

@@ -20,8 +20,17 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.wshunli.map.arcgis.android.moremap.MoreMapLayer {
-    public MoreMapLayer(int);
-    public MoreMapLayer(int, java.lang.String);
+# ArcGIS Android
+-keep class com.esri.** { *; }
+-keep interface com.esri.** { *; }
+-keep class org.codehaus.jackson.** { *; }
+-dontwarn org.codehaus.jackson.map.ext.**
+-dontwarn jcifs.http.**
+
+# Tianditu
+-keep class com.wshunli.map.** { *;}
+-keep interface com.wshunli.map.** { *;}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
 }
--keep class com.wshunli.map.arcgis.android.moremap.MoreMapLayerTypes { *;}
